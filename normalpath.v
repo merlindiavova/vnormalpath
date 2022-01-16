@@ -106,11 +106,11 @@ fn as_normalized_path(paths []string) string {
 
 				if possible_result.len == 0 {
 					// First check handles a edge case where there are ../p/..
-					if element[0] == 46 && element[1] == 46 {
+					if element[0] == `.` && element[1] == `.` {
 						relative_separator = '..'
-					} else if element[0] == 46 {
+					} else if element[0] == `.` {
 						relative_separator = '.'
-					} else if element[0] == 47 {
+					} else if element[0] == `/` {
 						relative_separator = separator
 					}
 				}
@@ -134,7 +134,7 @@ fn as_normalized_path(paths []string) string {
 			filtered_previous_paths := previous_paths.filter(it != '.')
 			if filtered_previous_paths.len == 2 {
 				if is_dot_dot(filtered_previous_paths[0]) && is_dot_dot(filtered_previous_paths[1])
-					&& relative == true && element[0] == 46 {
+					&& relative == true && element[0] == `.` {
 					relative_separator = '..' + separator + '..' + separator
 				}
 			}
@@ -144,11 +144,11 @@ fn as_normalized_path(paths []string) string {
 	}
 
 	if relative {
-		if possible_result.len == 1 && element[0] == 47 {
+		if possible_result.len == 1 && element[0] == `/` {
 			return os.join_path(separator, ...possible_result).trim_right('\\/')
 		}
 
-		if possible_result.len == 0 && element[0] == 47 && relative_separator == separator {
+		if possible_result.len == 0 && element[0] == `/` && relative_separator == separator {
 			return separator
 		}
 
@@ -157,11 +157,11 @@ fn as_normalized_path(paths []string) string {
 
 	mut result := os.join_path('', ...possible_result).trim_right('\\/')
 
-	if element[0] == 47 && possible_result.len == 0 && result.len == 0 {
+	if element[0] == `/` && possible_result.len == 0 && result.len == 0 {
 		return separator
 	}
 
-	if element[0] != 47 {
+	if element[0] != `/` {
 		return result.trim_left('\\/')
 	}
 
