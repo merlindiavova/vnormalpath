@@ -133,14 +133,11 @@ fn as_normalized_path(paths []string) string {
 			// Handle some edgcases
 			filtered_previous_paths := previous_paths.filter(it != '.')
 			if filtered_previous_paths.len == 2 {
-				if is_dot_dot(filtered_previous_paths[0])
-				&& is_dot_dot(filtered_previous_paths[1])
-				&& relative == true
-				&& element[0] == 46 {
+				if is_dot_dot(filtered_previous_paths[0]) && is_dot_dot(filtered_previous_paths[1])
+					&& relative == true && element[0] == 46 {
 					relative_separator = '..' + separator + '..' + separator
 				}
 			}
-
 		}
 
 		possible_result << path
